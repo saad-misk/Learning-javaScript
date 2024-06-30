@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>p5.js example</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="game">
+    <main></main>
+    <div class="container">
+      <form action="" class="content" id="myForm">
+        <input type="text" placeholder="Enter Your Name" id="inputname">
+        <button type="submit" id="submitButton">submit</button>
+      </form>
+
+      <div class="score-container">
+        <div class="score-title" id="player">Player Score</div>
+        <p class="score-value" id="total"></p>
+        <!-- <div class="score-value" id="total">850</div> -->
+
+        <div class="max-score">Max Score:
+          <p class="max-score" id="maximum">0</p>
+        </div>
+      </div>
+        <div class="last_game">
+            <h2>Last Game: </h1>
+            <label id="player_label">Player: <span id="player_name"></span></label>
+            <label id="score_label">Score: <span id="player_score">0</span></label>
+        </div>
+      
+        <div class="achievements-container" id="achievementsContainer">
+
+      </div>
+    </div>
+
+  </div>
+  <script src="players.js"></script>
+  <script src="./p5/p5.min.js"></script>
+  <!-- <script src="./p5/p5.sound.js"></script> -->
+  <script src="sketch.js"></script>
+  <script src="connect.js" type="module"></script>
+  <script src="snake.js"></script>
+
+  <script>
+    var player =  
+    document.getElementById('myForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      // Get input value
+      var name = document.getElementById("inputname").value.trim();
+      player = name;
+      if (name !== '') {
+        document.getElementById("player").innerText = name;
+        // Optionally, you can reset the input field after submission
+        document.getElementById("inputname").value = '';
+      } else {
+        alert("Please enter a valid name!");
+      }
+
+      // Add your custom logic here, e.g., handling form submission via Ajax
+    });
+  </script>
+
+</body>
+
+</html>
