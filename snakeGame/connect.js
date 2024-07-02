@@ -1,8 +1,6 @@
 // Import the necessary Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-import "./sketch.js";
-import "./snake.js";
 
 // Your Firebase configuration
 const firebaseConfig = {
@@ -22,13 +20,13 @@ const database = getDatabase(app);
 const scoresRef = ref(database, 'scores');
 
 // Function to push data to Firebase
-function pushDataToFirebase() {
-    var x = document.getElementById("player").innerText;
-    var y = parseInt(document.getElementById("maximum").innerText);
-    const data = {
-        name: x,
-        id: y
-    }
+function pushDataToFirebase(data) {
+    // var x = document.getElementById("player").innerText;
+    // var y = parseInt(document.getElementById("maximum").innerText);
+    // const data = {
+    //     name: x,
+    //     id: y
+    // }
     push(scoresRef, data)
     .then(() => {
       console.log('Data pushed successfully!');
@@ -40,31 +38,32 @@ function pushDataToFirebase() {
 
 // Function to read data from Firebase
 function readDataFromFirebase(path) {
-    const dataRef = ref(database, path);
-    onValue(dataRef, (snapshot) => {
-      if (snapshot.exists()) {
-        
-        var data = snapshot.val();
-        var keys = Object.keys(data);
-        for(var i = 0; i < keys.length; i++){
-            var k = keys[i];
-            name = data[k].name;
-            score = data[k].id;
-            console.log(name, score);
-        }
-      } else {
-        console.log('No data available');
-      }
-    }, (error) => {
-      console.error('Error reading data:', error);
-    });
-  }
-  
-  // Call function to push data when needed
-//   pushDataToFirebase();
-  
-  // Call function to read data from 'users' node
-  readDataFromFirebase('scores');
-  
-  // Call function to read data from 'users' node with a query
-  readDataFromFirebase('scores');   
+  return new Promise((resolve, reject) => {
+      const dataRef = ref(database, path);
+      
+      onValue(dataRef, (snapshot) => {
+          if (snapshot.exists()) {
+              var data = snapshot.val();
+              var keys = Object.keys(data);
+              var scores = [];
+
+              for (var i = 0; i < keys.length; i++) {
+                  var k = keys[i];
+                  var playerName = data[k].name;
+                  var scoredata = data[k].score;
+                  scores.push({ name: playerName, score: scoredata });
+              }
+              resolve(scores);
+          } else {
+              console.log('No data available');
+              resolve([{ name: "player", score: "score" }]);
+          }
+      }, (error) => {
+          console.error('Error reading data:', error);
+          reject(error); // Reject promise in case of error
+      });
+  });
+}
+
+  export { pushDataToFirebase };
+  export { readDataFromFirebase };

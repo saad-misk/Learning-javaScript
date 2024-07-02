@@ -5,11 +5,12 @@ function Snake(){
     this.xspeed = 0;
     this.yspeed = 0;
     this.total = 0;
-    this.tail = [];
+    this.maxtotal = 0;
+    this.tail = [{x:0, y:0}];
 
     this.eat = function(pos) {
         var d = dist(this.x, this.y, pos.x, pos.y);
-        if(d < 1){
+        if(d < 15){
             this.total++;
             return true;
         }
@@ -17,21 +18,37 @@ function Snake(){
     }
 
     this.dir = function(x, y) {
-        this.xspeed = x;
-        this.yspeed = y;
+        if( (this.tail[this.tail.length-1].x != this.x + (20*x) && this.tail[this.tail.length-1].x != this.y + (20*y)) || this.tail.length === 1 ){
+            this.xspeed = x;
+            this.yspeed = y;
+        }
+        // for(var i = 0; i < this.tail.length; i++){
+        //     console.log(this.tail[i].x, this.tail[i].x);
+        // }
+        // console.log("hi");
+        // console.log(x, y);
+        // console.log("****************************************");
+        
     }
 
     this.death = function() {
         for(var i = 0; i < this.tail.length; i++){
             var r = this.tail[i];
             var d = dist(this.x, this.y, r.x, r.y);
-            if( d < 1 ){
+            if( d < 5 ){
+                var pname = document.getElementById("player").textContent;
+                // console.log(name + " hih");
+                document.getElementById('player_name').textContent = pname;
+                document.getElementById('player_score').textContent = this.total;
+                this.maxtotal = max(this.maxtotal, this.total);
+                
+                const button = document.getElementById('AddButton');
+                button.style.width = '200px';
+                button.style.height = '50px';
+                button.innerText = 'Add me to board';
+                
                 this.total = 0;
                 this.tail = [];
-                var name = document.getElementById("player").value;
-                console.log(name + " hih");
-                document.getElementById('player_name').textContent = name;
-                document.getElementById('player_score').textContent = this.total;
             }
         }
         return false;
@@ -46,11 +63,15 @@ function Snake(){
 
         this.x = this.x + this.xspeed*side;
         this.y = this.y + this.yspeed*side;
-        if( this.x + 20 >= 600 || this.x <= 0 ){
-            this.xspeed = -this.xspeed;
+        if( this.x  >= windowWidth-100  ){
+            this.x = 0;
+        }else if( this.x <= -20){
+            this.x = windowWidth-100 - 20;
         }
-        if( this.y + 20 >= 600 || this.y <= 0 ){
-            this.yspeed = -this.yspeed;
+        if( this.y >= windowHeight-50 ){
+            this.y = 0;
+        }else if( this.y <= -20 ){
+            this.y = windowHeight-50 - 20;
         }
         document.getElementById("total").innerText = this.total;
         var x = parseInt(document.getElementById("maximum").innerText);

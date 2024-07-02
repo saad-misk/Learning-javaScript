@@ -12,7 +12,10 @@
 
     .game{
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
     }
     .container{
         display: flex;
@@ -26,6 +29,9 @@
         /* background-color: rgb(41, 79, 117); */
         border-radius: 5px;
     }
+    .content{
+      margin: 10px;
+    }
     .content > input{
         width: 200px;
         padding: 10px;
@@ -34,6 +40,7 @@
         border-radius: 5px;
         outline: none; /* Remove default focus outline */
         transition: border-color 0.3s ease;
+        margin-right: 10px;
     }
     .content > input:hover{
         border-color: #aaa;
@@ -122,6 +129,9 @@
     align-items: center;
     margin: 5px;
 
+  }
+  .last_game_header{
+    color: dodgerblue;
   }
   #player_label, #score_label {
     width: 100px;
