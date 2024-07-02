@@ -97,7 +97,7 @@ import {readDataFromFirebase} from './connect.js';
     fetchScoresFromFirebaseAndAssign().then(scores => {
         // scoresArray is now populated with data
         const players = scoresArray;
-    
+        players.sort((a, b) => b.score - a.score);
         // Function to display achievements
         function displayAchievements(players) {
             const container = document.getElementById('achievementsContainer');
